@@ -57,56 +57,71 @@ export default function List() {
     };
 
     return (
-        <div>
-            <h1>Danh sách sản phẩm</h1>
+        <div className="container mt-4">
+            <div className="row justify-content-center">
+                <div className="col-md-10">
+                    <h1 className="text-center mb-4 text-primary">📱 Danh sách sản phẩm</h1>
 
-            {/* form tìm kiếm ở đây */}
-            <SearchForm
-                searchName={searchName}
-                setSearchName={setSearchName}
-                searchCategory={searchCategory}
-                setSearchCategory={setSearchCategory}
-                categories={categories}
-                handleResetSearch={handleReset}
-            />
+                    {/* form tìm kiếm ở đây */}
+                    <div className="card mb-4">
+                        <div className="card-body">
+                            <SearchForm
+                                searchName={searchName}
+                                setSearchName={setSearchName}
+                                searchCategory={searchCategory}
+                                setSearchCategory={setSearchCategory}
+                                categories={categories}
+                                handleResetSearch={handleReset}
+                            />
+                        </div>
+                    </div>
 
-            {/* thêm mới sản phẩm ở đây */}
-            <Link to="/create"><button>Thêm mới</button></Link>
+                    {/* thêm mới sản phẩm ở đây */}
+                    <div className="text-end mb-3">
+                        <Link to="/create" className="btn btn-primary btn-lg">
+                            <i className="bi bi-plus-circle me-2"></i>Thêm mới sản phẩm
+                        </Link>
+                    </div>
 
-            {filteredProducts.length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#666', fontSize: '18px', marginTop: '20px' }}>
-                    Không có kết quả tìm kiếm phù hợp
-                </p>
-            ) : (
-                <table>
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Mã sản phẩm</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Thể loại</th>
-                            <th>Số lượng</th>
-                            <th>Giá</th>
-                            <th>Ngày Nhập</th>
-                            <th>Mô tả</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredProducts.map((prod, index) => (
-                            <tr key={prod.id}>
-                                <td>{index + 1}</td>
-                                <td>{prod.maSanPham}</td>
-                                <td>{prod.tenSanPham}</td>
-                                <td>{getTenLoai(prod.theLoaiId)}</td>
-                                <td>{prod.soLuong}</td>
-                                <td>{prod.gia.toLocaleString()}</td>
-                                <td>{new Date(prod.ngayNhap).toLocaleDateString()}</td>
-                                <td>{prod.moTaSanPham}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                    {filteredProducts.length === 0 ? (
+                        <div className="alert alert-info text-center" role="alert">
+                            <h4 className="alert-heading">Không có kết quả</h4>
+                            <p className="mb-0">Không tìm thấy sản phẩm nào phù hợp với tiêu chí tìm kiếm.</p>
+                        </div>
+                    ) : (
+                        <div className="table-responsive">
+                            <table className="table table-striped table-hover">
+                                <thead className="table-dark">
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Thể loại</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá</th>
+                                        <th>Ngày Nhập</th>
+                                        <th>Mô tả</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredProducts.map((prod, index) => (
+                                        <tr key={prod.id}>
+                                            <td><span className="badge bg-secondary">{index + 1}</span></td>
+                                            <td><strong>{prod.maSanPham}</strong></td>
+                                            <td>{prod.tenSanPham}</td>
+                                            <td><span className="badge bg-info">{getTenLoai(prod.theLoaiId)}</span></td>
+                                            <td><span className="badge bg-success">{prod.soLuong}</span></td>
+                                            <td><strong className="text-danger">{prod.gia.toLocaleString()} ₫</strong></td>
+                                            <td>{new Date(prod.ngayNhap).toLocaleDateString()}</td>
+                                            <td><small className="text-muted">{prod.moTaSanPham}</small></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

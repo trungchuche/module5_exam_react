@@ -12,7 +12,7 @@ export default function Create() {
     const validationSchema = Yup.object({
         maSanPham: Yup.string()
             .required("Mã sản phẩm là bắt buộc")
-            .matches(/^SP\d{3}$/, "Mã sản phẩm phải có định dạng SP### (VD: SP001)"),
+            .matches(/^PROD-\d{4}$/, "Mã sản phẩm phải có định dạng PROD-XXXX (VD: PROD-0001)"),
         tenSanPham: Yup.string()
             .required("Tên sản phẩm là bắt buộc")
             .min(2, "Tên sản phẩm phải có ít nhất 2 ký tự"),
@@ -27,7 +27,8 @@ export default function Create() {
             .integer("Số lượng phải là số nguyên")
             .min(0, "Số lượng không được âm"),
         ngayNhap: Yup.date()
-            .required("Ngày nhập là bắt buộc"),
+            .required("Ngày nhập là bắt buộc")
+            .max(new Date(), "Ngày nhập không được lớn hơn ngày hiện tại"),
         moTaSanPham: Yup.string()
             .required("Mô tả sản phẩm là bắt buộc")
             .min(10, "Mô tả phải có ít nhất 10 ký tự")
@@ -43,8 +44,22 @@ export default function Create() {
     // Xử lý submit form
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            // Convert theLoaiId về number và các trường khác
+            // Lấy danh sách sản phẩm hiện tại để tìm ID lớn nhất
+            const productsResponse = await axios.get("http://localhost:3000/products");
+            const products = productsResponse.data;
+
+            // Tìm ID lớn nhất và tạo ID mới (chỉ lấy các ID là số)
+            const numericIds = products
+                .map(p => p.id)
+                .filter(id => id !== null && !isNaN(id) && Number.isInteger(Number(id)))
+                .map(id => Number(id));
+
+            const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
+            const newId = maxId + 1;
+
+            // Convert theLoaiId về number và các trường khác, thêm ID mới
             const formattedValues = {
+                id: newId,
                 ...values,
                 theLoaiId: parseInt(values.theLoaiId),
                 gia: parseFloat(values.gia),
@@ -63,88 +78,142 @@ export default function Create() {
     };
 
     return (
-        <div>
-            <h1>Thêm sản phẩm mới</h1>
-
-            <Formik
-                initialValues={{
-                    maSanPham: "",
-                    tenSanPham: "",
-                    theLoaiId: "",
-                    gia: "",
-                    soLuong: "",
-                    ngayNhap: "",
-                    moTaSanPham: ""
-                }}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-            >
-                {({ isSubmitting }) => (
-                    <Form>
-                        <div>
-                            <label>Mã sản phẩm:</label>
-                            <Field type="text" name="maSanPham" />
-                            <ErrorMessage name="maSanPham" component="div" style={{ color: 'red' }} />
+        <div className="container mt-4">
+            <div className="row justify-content-center">
+                <div className="col-md-8">
+                    <div className="card shadow">
+                        <div className="card-header bg-primary text-white">
+                            <h1 className="card-title mb-0 fs-4">➕ Thêm sản phẩm mới</h1>
                         </div>
+                        <div className="card-body">
+                            <Formik
+                                initialValues={{
+                                    maSanPham: "",
+                                    tenSanPham: "",
+                                    theLoaiId: "",
+                                    gia: "",
+                                    soLuong: "",
+                                    ngayNhap: "",
+                                    moTaSanPham: ""
+                                }}
+                                validationSchema={validationSchema}
+                                onSubmit={handleSubmit}
+                            >
+                                {({ isSubmitting }) => (
+                                    <Form>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label className="form-label fw-bold">Mã sản phẩm:</label>
+                                                    <Field
+                                                        type="text"
+                                                        name="maSanPham"
+                                                        className="form-control"
+                                                        placeholder="VD: PROD-0001"
+                                                    />
+                                                    <ErrorMessage name="maSanPham" component="div" className="text-danger mt-1 small" />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label className="form-label fw-bold">Thể loại:</label>
+                                                    <Field as="select" name="theLoaiId" className="form-select">
+                                                        <option value="">-- Chọn thể loại --</option>
+                                                        {categories.map(cat => (
+                                                            <option key={cat.id} value={cat.id}>
+                                                                {cat.tenTheLoai}
+                                                            </option>
+                                                        ))}
+                                                    </Field>
+                                                    <ErrorMessage name="theLoaiId" component="div" className="text-danger mt-1 small" />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                        <div>
-                            <label>Tên sản phẩm:</label>
-                            <Field type="text" name="tenSanPham" />
-                            <ErrorMessage name="tenSanPham" component="div" style={{ color: 'red' }} />
-                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label fw-bold">Tên sản phẩm:</label>
+                                            <Field
+                                                type="text"
+                                                name="tenSanPham"
+                                                className="form-control"
+                                                placeholder="Nhập tên sản phẩm..."
+                                            />
+                                            <ErrorMessage name="tenSanPham" component="div" className="text-danger mt-1 small" />
+                                        </div>
 
-                        <div>
-                            <label>Thể loại:</label>
-                            <Field as="select" name="theLoaiId">
-                                <option value="">-- Chọn thể loại --</option>
-                                {categories.map(cat => (
-                                    <option key={cat.id} value={cat.id}>
-                                        {cat.tenTheLoai}
-                                    </option>
-                                ))}
-                            </Field>
-                            <ErrorMessage name="theLoaiId" component="div" style={{ color: 'red' }} />
-                        </div>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label className="form-label fw-bold">Giá (VNĐ):</label>
+                                                    <Field
+                                                        type="number"
+                                                        name="gia"
+                                                        className="form-control"
+                                                        placeholder="0"
+                                                    />
+                                                    <ErrorMessage name="gia" component="div" className="text-danger mt-1 small" />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label className="form-label fw-bold">Số lượng:</label>
+                                                    <Field
+                                                        type="number"
+                                                        name="soLuong"
+                                                        className="form-control"
+                                                        placeholder="0"
+                                                    />
+                                                    <ErrorMessage name="soLuong" component="div" className="text-danger mt-1 small" />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                        <div>
-                            <label>Giá (VNĐ):</label>
-                            <Field type="number" name="gia" />
-                            <ErrorMessage name="gia" component="div" style={{ color: 'red' }} />
-                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label fw-bold">Ngày nhập:</label>
+                                            <Field
+                                                type="date"
+                                                name="ngayNhap"
+                                                className="form-control"
+                                                max={new Date().toISOString().split('T')[0]}
+                                            />
+                                            <ErrorMessage name="ngayNhap" component="div" className="text-danger mt-1 small" />
+                                        </div>
 
-                        <div>
-                            <label>Số lượng:</label>
-                            <Field type="number" name="soLuong" />
-                            <ErrorMessage name="soLuong" component="div" style={{ color: 'red' }} />
-                        </div>
+                                        <div className="mb-4">
+                                            <label className="form-label fw-bold">Mô tả sản phẩm:</label>
+                                            <Field
+                                                as="textarea"
+                                                name="moTaSanPham"
+                                                rows="4"
+                                                className="form-control"
+                                                placeholder="Nhập mô tả chi tiết về sản phẩm..."
+                                            />
+                                            <ErrorMessage name="moTaSanPham" component="div" className="text-danger mt-1 small" />
+                                        </div>
 
-                        <div>
-                            <label>Ngày nhập:</label>
-                            <Field
-                                type="date"
-                                name="ngayNhap"
-                                max={new Date().toISOString().split('T')[0]}
-                            />
-                            <ErrorMessage name="ngayNhap" component="div" style={{ color: 'red' }} />
+                                        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <button
+                                                type="button"
+                                                className="btn btn-secondary me-md-2"
+                                                onClick={() => navigate("/")}
+                                            >
+                                                🔙 Quay lại
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                                disabled={isSubmitting}
+                                            >
+                                                {isSubmitting ? "⏳ Đang thêm..." : "➕ Thêm sản phẩm"}
+                                            </button>
+                                        </div>
+                                    </Form>
+                                )}
+                            </Formik>
                         </div>
-
-                        <div>
-                            <label>Mô tả sản phẩm:</label>
-                            <Field as="textarea" name="moTaSanPham" rows="4" />
-                            <ErrorMessage name="moTaSanPham" component="div" style={{ color: 'red' }} />
-                        </div>
-
-                        <div>
-                            <button type="submit" disabled={isSubmitting}>
-                                {isSubmitting ? "Đang thêm..." : "Thêm sản phẩm"}
-                            </button>
-                            <button type="button" onClick={() => navigate("/")}>
-                                Hủy
-                            </button>
-                        </div>
-                    </Form>
-                )}
-            </Formik>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
