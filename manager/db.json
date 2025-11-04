@@ -1,0 +1,126 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "tenTheLoai": "Điện thoại"
+        },
+        {
+            "id": 2,
+            "tenTheLoai": "Laptop"
+        },
+        {
+            "id": 3,
+            "tenTheLoai": "Máy tính bảng"
+        },
+        {
+            "id": 4,
+            "tenTheLoai": "Phụ kiện"
+        },
+        {
+            "id": 5,
+            "tenTheLoai": "Màn hình"
+        }
+    ],
+    "products": [
+        {
+            "id": 1,
+            "maSanPham": "SP001",
+            "tenSanPham": "iPhone 15 Pro",
+            "theLoaiId": 1,
+            "gia": 29990000,
+            "soLuong": 15,
+            "ngayNhap": "10/09/2025",
+            "moTaSanPham": "Điện thoại Apple cao cấp, chip A17 Pro, màn hình Super Retina XDR, hỗ trợ 5G, camera nâng cấp với tính năng chụp đêm siêu nét."
+        },
+        {
+            "id": 2,
+            "maSanPham": "SP002",
+            "tenSanPham": "Samsung Galaxy S24 Ultra",
+            "theLoaiId": 1,
+            "gia": 25990000,
+            "soLuong": 12,
+            "ngayNhap": "18/08/2025",
+            "moTaSanPham": "Smartphone Samsung với camera 200MP, màn hình AMOLED 120Hz, pin dung lượng lớn, hỗ trợ S-Pen, hiệu năng vượt trội cho mọi tác vụ."
+        },
+        {
+            "id": 3,
+            "maSanPham": "SP003",
+            "tenSanPham": "MacBook Air M3",
+            "theLoaiId": 2,
+            "gia": 32990000,
+            "soLuong": 8,
+            "ngayNhap": "22/09/2025",
+            "moTaSanPham": "Laptop Apple mỏng nhẹ, chip M3 siêu tiết kiệm năng lượng, màn hình Retina sắc nét, pin sử dụng lâu, lý tưởng cho học tập và công việc văn phòng."
+        },
+        {
+            "id": 4,
+            "maSanPham": "SP004",
+            "tenSanPham": "ASUS ROG Strix G16",
+            "theLoaiId": 2,
+            "gia": 45990000,
+            "soLuong": 5,
+            "ngayNhap": "05/10/2025",
+            "moTaSanPham": "Laptop gaming mạnh mẽ với RTX 4070, CPU Intel Core i9 thế hệ mới, màn hình 165Hz, hệ thống tản nhiệt tối ưu, dành cho game thủ chuyên nghiệp."
+        },
+        {
+            "id": 5,
+            "maSanPham": "iPad Air M2",
+            "tenSanPham": "SP005",
+            "theLoaiId": 3,
+            "gia": 19990000,
+            "soLuong": 20,
+            "ngayNhap": "30/07/2025",
+            "moTaSanPham": "Máy tính bảng Apple hiệu năng cao, chip M2 mạnh mẽ, màn hình Liquid Retina sắc nét, hỗ trợ Apple Pencil, lý tưởng cho sáng tạo và học tập."
+        },
+        {
+            "id": 6,
+            "maSanPham": "SP006",
+            "tenSanPham": "Xiaomi Pad 6",
+            "theLoaiId": 3,
+            "gia": 8990000,
+            "soLuong": 30,
+            "ngayNhap": "15/09/2025",
+            "moTaSanPham": "Máy tính bảng Android giá rẻ, hiệu năng tốt, màn hình IPS sắc nét, pin dung lượng lớn, phù hợp học tập, giải trí và xem phim."
+        },
+        {
+            "id": 7,
+            "maSanPham": "SP007",
+            "tenSanPham": "Tai nghe AirPods Pro 2",
+            "theLoaiId": 4,
+            "gia": 5990000,
+            "soLuong": 40,
+            "ngayNhap": "01/08/2025",
+            "moTaSanPham": "Tai nghe chống ồn chủ động của Apple, chất lượng âm thanh cao, thời lượng pin dài, kết nối nhanh với thiết bị Apple, tiện lợi khi di chuyển."
+        },
+        {
+            "id": 8,
+            "maSanPham": "SP008",
+            "tenSanPham": "Chuột Logitech MX Master 3S",
+            "theLoaiId": 4,
+            "gia": 2490000,
+            "soLuong": 25,
+            "ngayNhap": "12/09/2025",
+            "moTaSanPham": "Chuột không dây cao cấp cho dân văn phòng, thiết kế công thái học, hỗ trợ đa thiết bị, nút tùy chỉnh thông minh, di chuyển mượt mà trên nhiều bề mặt."
+        },
+        {
+            "id": 9,
+            "maSanPham": "SP009",
+            "tenSanPham": "Màn hình Dell Ultrasharp 27” 4K",
+            "theLoaiId": 5,
+            "gia": 15990000,
+            "soLuong": 10,
+            "ngayNhap": "28/09/2025",
+            "moTaSanPham": "Màn hình độ phân giải cao 4K, màu sắc chuẩn xác, thích hợp cho thiết kế đồ họa, dựng phim, hoặc lập trình chuyên nghiệp."
+        },
+        {
+            "id": 10,
+            "maSanPham": "SP010",
+            "tenSanPham": "Màn hình Samsung Odyssey G9",
+            "theLoaiId": 5,
+            "gia": 29990000,
+            "soLuong": 6,
+            "ngayNhap": "20/10/2025",
+            "moTaSanPham": "Màn hình cong 49 inch, tần số quét 240Hz, dành cho game thủ chuyên nghiệp, trải nghiệm chơi game sống động và mượt mà, thiết kế hiện đại."
+        }
+    ]
+}
